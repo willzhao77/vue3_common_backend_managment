@@ -16,7 +16,7 @@
                         <el-input v-model="form.password" />
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit(ruleFormRef)">Create</el-button>
+                        <el-button type="primary" @click="onSubmit(ruleFormRef)">Login</el-button>
                         <el-button>Cancel</el-button>
                     </el-form-item>
                 </el-form>
@@ -30,7 +30,9 @@ import { ElMessage } from 'element-plus'
 import {nameRule} from '../utils/validate.js'
 import { setToken } from '@/utils/setToken.js'
 import { login } from '@/request/api.js'
-
+import { useRouter } from 'vue-router'
+const router = useRouter()
+console.log(router.matched)
 const currentInstance = getCurrentInstance()
 const { $http} = currentInstance.appContext.config.globalProperties
 
@@ -76,6 +78,8 @@ const onSubmit = async (formEl) => {
                 //save token to local storage
                 setToken('username', res.data.username)
                 setToken('token', res.data.token)
+                router.push('/home')
+
                 ElMessage({
                     message: 'submitted!!!',
                     type: 'success',
