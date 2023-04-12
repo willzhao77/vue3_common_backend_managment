@@ -1,5 +1,36 @@
 <template>
     <div>
-        Student List
+        <el-table :data="data.tableData" border style="width: 100%">
+            <el-table-column prop="name" label="Name" align="center" />
+            <el-table-column prop="sex" label="Gender" align="center" />
+            <el-table-column prop="age" label="Age" align="center" />
+            <el-table-column prop="number" label="Number" align="center" />
+            <el-table-column prop="class" label="Class" align="center" />
+            <el-table-column prop="state" label="State" align="center" />
+            <el-table-column prop="address" label="Address" align="center" />
+            <el-table-column prop="phone" label="Phone" align="center" />
+            <el-table-column label="Operation">
+                <el-button type="danger" size="mini" icon="el-icon-delete">Del</el-button>
+            </el-table-column>
+        </el-table>
     </div>
 </template>
+
+<script setup>
+import { onMounted, reactive } from 'vue';
+import {students} from '@/request/api.js'
+
+const data = reactive({
+    'tableData':[]
+})
+
+onMounted(()=>{
+    students().then((res) => {
+        console.log(res)
+        if(res.data.status===200) {
+            data.tableData = res.data.data
+        }
+    })
+})
+
+</script>
