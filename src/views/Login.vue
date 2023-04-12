@@ -25,16 +25,18 @@
 </template>
 
 <script setup>
-import {reactive, ref, getCurrentInstance} from 'vue'
+import {reactive, ref} from 'vue'
 import { ElMessage } from 'element-plus'
 import {nameRule} from '../utils/validate.js'
 import { setToken } from '@/utils/setToken.js'
 import { login } from '@/request/api.js'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-console.log(router.matched)
-const currentInstance = getCurrentInstance()
-const { $http} = currentInstance.appContext.config.globalProperties
+
+// use axios 
+// import {getCurrentInstance} from 'vue'
+// const currentInstance = getCurrentInstance()
+// const { $http} = currentInstance.appContext.config.globalProperties
 
 const ruleFormRef = ref()
 
@@ -81,7 +83,7 @@ const onSubmit = async (formEl) => {
                 router.push('/home')
 
                 ElMessage({
-                    message: 'submitted!!!',
+                    message: 'Logged In!!!',
                     type: 'success',
                 })
             }

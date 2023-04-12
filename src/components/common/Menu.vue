@@ -29,22 +29,23 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
-import router from '../../router/index.js'
-import {
-  Document,
-  Menu as IconMenu,
-  Location,
-  Setting,
-} from '@element-plus/icons-vue'
-
-let menus = reactive([])
-
-onMounted(()=> {
-    menus.push(...router.options.routes )
 
 
-})
+import { Location } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const menus = router.options.routes
+
+
+
+// method 2
+// import { onMounted, reactive } from 'vue';
+// import router from '../../router/index.js'
+// let menus = reactive([])
+
+// onMounted(()=> {
+//     menus.push(...router.options.routes )
+// })
 
 </script>
 
