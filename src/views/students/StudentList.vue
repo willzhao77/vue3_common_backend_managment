@@ -105,7 +105,7 @@ function del(row) {
                     message: 'Delete student success!',
                     type: 'success',
             })
-            getDate()
+            getData()
         }
     })
 }
