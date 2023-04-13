@@ -1,6 +1,7 @@
 <template>
     <div>
-        <el-table :data="data.tableData" border style="width: 100%">
+        <!-- <el-table :data="data.tableData.slice((data.currentPage - 1) * data.pageSize, data.currentPage * data.pageSize)" border style="width: 100%"> -->
+        <el-table :data="compData" border style="width: 100%">
             <el-table-column prop="name" label="Name" align="center" />
             <el-table-column prop="sex_text" label="Gender" align="center" />
             <el-table-column prop="age" label="Age" align="center" />
@@ -10,25 +11,44 @@
             <el-table-column prop="address" label="Address" align="center" />
             <el-table-column prop="phone" label="Phone" align="center" />
             <el-table-column label="Operation">
-                <el-button type="danger" size="mini" icon="el-icon-delete">Del</el-button>
+                <el-button  icon="el-icon-delete">Del</el-button>
             </el-table-column>
         </el-table>
+        <el-pagination
+            v-model:current-page="data.currentPage"
+            v-model:page-size="data.pageSize"
+            :page-sizes="[5, 10, 20, 50]"
+            :small="small"
+            :disabled="disabled"
+            :background="background"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="data.total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+        />
     </div>
 </template>
 
 <script setup>
-import { onMounted, reactive } from 'vue';
+import { onMounted, reactive, ref, computed } from 'vue';
 import {students} from '@/request/api.js'
 
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+
 const data = reactive({
-    'tableData':[]
+    'tableData':[],
+    'currentPage': 1,
+    'pageSize': 10,
+    'total': 0,
 })
 
 onMounted(()=>{
     students().then((res) => {
-        console.log(res)
         if(res.data.status===200) {
             data.tableData = res.data.data
+            data.total = res.data.total
             data.tableData.forEach(item => {
                 item.sex === 1 ? item.sex_text = 'Male' : item.sex_text = 'Female'
                 item.status === 1
@@ -40,5 +60,16 @@ onMounted(()=>{
         }
     })
 })
+
+let compData = computed(()=> {
+    return data.tableData.slice((data.currentPage - 1) * data.pageSize, data.currentPage * data.pageSize)
+})
+
+const handleSizeChange = (val) => {
+  console.log(`${val} items per page`)
+}
+const handleCurrentChange = (val) => {
+  console.log(`current page: ${val}`)
+}
 
 </script>
