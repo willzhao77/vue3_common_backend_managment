@@ -1,5 +1,18 @@
 <template>
     <div>
+        <el-form :inline="true" :model="data.formInline" class="demo-form-inline">
+            <el-form-item label="Name:">
+                <el-input v-model="data.formInline.name" placeholder="Please enter name" />
+            </el-form-item>
+
+            <el-form-item>
+                <el-button type="primary" @click="find">Find</el-button>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="reset">Reset</el-button>
+            </el-form-item>
+        </el-form>
+
         <!-- <el-table :data="data.tableData.slice((data.currentPage - 1) * data.pageSize, data.currentPage * data.pageSize)" border style="width: 100%"> -->
         <el-table :data="compData" border style="width: 100%">
             <el-table-column prop="name" label="Name" align="center" />
@@ -45,17 +58,29 @@ const data = reactive({
     'currentPage': 1,
     'pageSize': 10,
     'total': 0,
+    'formInline': {
+        'name': ''
+    }
 })
 
 
 
 onMounted(()=>{
-    getDate()
+    getData()
 })
 
+function find() {
+    getData(data.formInline)
+}
 
-function getDate() {
-    students().then((res) => {
+function reset() {
+    data.formInline = {}
+    getData(data.formInline)
+
+}
+
+function getData(params) {
+    students(params).then((res) => {
         if(res.data.status===200) {
             data.tableData = res.data.data
             data.total = res.data.total
