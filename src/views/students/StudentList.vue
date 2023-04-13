@@ -11,7 +11,9 @@
             <el-table-column prop="address" label="Address" align="center" />
             <el-table-column prop="phone" label="Phone" align="center" />
             <el-table-column label="Operation">
-                <el-button  icon="el-icon-delete">Del</el-button>
+                <template #default="scope">
+                    <el-button  icon="el-icon-delete" @click="del(scope.row)">Del</el-button>
+                </template>
             </el-table-column>
         </el-table>
         <el-pagination
@@ -31,7 +33,8 @@
 
 <script setup>
 import { onMounted, reactive, ref, computed } from 'vue';
-import {students} from '@/request/api.js'
+import {students, studentDel} from '@/request/api.js'
+import { ElMessage } from 'element-plus'
 
 const small = ref(false)
 const background = ref(false)
@@ -44,7 +47,14 @@ const data = reactive({
     'total': 0,
 })
 
+
+
 onMounted(()=>{
+    getDate()
+})
+
+
+function getDate() {
     students().then((res) => {
         if(res.data.status===200) {
             data.tableData = res.data.data
@@ -59,7 +69,21 @@ onMounted(()=>{
             })
         }
     })
-})
+}
+
+function del(row) {
+    console.log(row)
+    studentDel(row.id).then(res => {
+        console.log(res)
+        if(res.data.status === 200) {
+            ElMessage({
+                    message: 'Delete student success!',
+                    type: 'success',
+            })
+            getDate()
+        }
+    })
+}
 
 let compData = computed(()=> {
     return data.tableData.slice((data.currentPage - 1) * data.pageSize, data.currentPage * data.pageSize)
