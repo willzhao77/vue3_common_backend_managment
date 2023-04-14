@@ -30,32 +30,46 @@ export function studentDel(id) {
     })
 }
 
-//信息列表新增接口
-export function addInfo(data) {
-    //一般不需要做数据处理， 这里是服务器端没有做处理
-    data = qs.stringify(data)
-    return http({
-        method: 'post',
-        url: '/info',
-        data
-    })
-}
+// //信息列表新增接口
+// export function addInfo(data) {
+//     //一般不需要做数据处理， 这里是服务器端没有做处理
+//     data = qs.stringify(data)
+//     return http({
+//         method: 'post',
+//         url: '/info',
+//         data
+//     })
+// }
 
-//信息列表修改接口
-export function updateInfo(data) {
+// //信息列表修改接口
+// export function updateInfo(data) {
+//     data = qs.stringify(data)
+//     return http({
+//         method: 'put',
+//         url: '/info',
+//         data
+//     })
+// }
+
+//信息列表新增和修改接口
+export function createUpdateInfo(type, data) {
     data = qs.stringify(data)
-    return http({
-        method: 'put',
-        url: '/info',
-        data
-    })
+    const obj = {method: type, url: 'info', data}
+    return http(obj)
 }
 
 //信息列表查询接口
 export function getInfo() {
-    //一般不需要做数据处理， 这里是服务器端没有做处理
     return http({
         method: 'get',
         url: '/info',
+    })
+}
+
+//信息列表删除接口
+export function infoDel(id) {
+    return http({
+        method: 'delete',
+        url: `/info/${id}`,
     })
 }

@@ -72,7 +72,8 @@
 <script setup>
 import {reactive, ref, onMounted } from 'vue';
 import { ElMessage } from 'element-plus'
-import { getInfo, addInfo, updateInfo } from '@/request/api'
+// import { getInfo, addInfo, updateInfo, infoDel } from '@/request/api'
+import { getInfo, createUpdateInfo, infoDel } from '@/request/api'
 const formLabelWidth = '140px'
 const ruleFormRef = ref()
 
@@ -109,6 +110,7 @@ onMounted(()=>{
 
 function getData() {
     getInfo().then( res => {
+        console.log(res)
         if(res.data.status === 200) {
             data.tableData = res.data.data
             data.total = res.data.total
@@ -131,7 +133,9 @@ function addStudent() {
     }
 
     //remove form validation.
-    ruleFormRef.value.resetFields()
+    if(ruleFormRef.value) {
+        ruleFormRef.value.resetFields()
+    }
 }
 
 function edit(row) {
@@ -145,8 +149,21 @@ function closeInfo() {
     data.dialogFormVisible = false
 }
 
-function del() {
-
+function del(row) {
+    const text = "Are you sure to delete this user?\nEither OK or Cancel.";
+    if (confirm(text) == true) {
+        infoDel(row.id).then(res => {
+            if(res.data.status === 200) {
+                getData()
+                ElMessage({
+                    message: res.data.message,
+                    type: 'success',
+                })
+            }
+        })
+    } else {
+        console.log('false')
+    }
 }
 
 function submit(formEl) {
@@ -156,7 +173,7 @@ function submit(formEl) {
         console.log('submit!')
         //Check if add or update
         if(data.isAdd) {
-            addInfo(data.form).then( res => {
+            createUpdateInfo( 'post', data.form).then( res => {
                 if(res.data.status === 200) {
                     getData()
                     data.dialogFormVisible = false
@@ -167,7 +184,7 @@ function submit(formEl) {
                 }
             })
         } else {
-            updateInfo(data.form).then( res => {
+            createUpdateInfo('put', data.form).then( res => {
                 if(res.data.status === 200) {
                     getData()
                     data.dialogFormVisible = false
