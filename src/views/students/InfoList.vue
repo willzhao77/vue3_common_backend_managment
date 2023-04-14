@@ -23,8 +23,8 @@
             </el-table-column>
         </el-table>
 
-        <el-dialog v-model="data.dialogFormVisible" title="Add Student Info" width="600px">
-            <el-form :model="data.form" :rules="rules" ref="form">
+        <el-dialog v-model="data.dialogFormVisible" :title="data.isAdd ? 'Add Student Info' : 'Edit Studnet Info'" width="600px">
+            <el-form :model="data.form" :rules="rules" ref="ruleFormRef">
                 <el-form-item label="Name" :label-width="formLabelWidth" prop="name">
                     <el-input v-model="data.form.name" autocomplete="off" />
                 </el-form-item>
@@ -32,7 +32,7 @@
                     <el-radio v-model="data.form.gender" label="1">Male</el-radio>
                     <el-radio v-model="data.form.gender" label="2">Female</el-radio>
                 </el-form-item>
-                <el-form-item label="Age" :label-width="formLabelWidth" prop="name">
+                <el-form-item label="Age" :label-width="formLabelWidth" prop="age">
                     <el-input v-model="data.form.age" autocomplete="off" />
                 </el-form-item>
                 <el-form-item label="Father Name" :label-width="formLabelWidth" prop="father">
@@ -47,8 +47,8 @@
                 <el-form-item label="Enroll Time" :label-width="formLabelWidth" prop="time">
                     <el-date-picker
                         v-model="data.form.time"
-                        format="dd-MM-yyyy"
-                        value-format="yyyy-MM-dd"
+                        format="DD-MM-YYYY"
+                        value-format="YYYY-MM-DD"
                         type="date"
                         placeholder="Please select date."
                     />
@@ -59,8 +59,8 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submit(data.form)">
+                    <el-button @click="closeInfo(ruleFormRef)">Cancel</el-button>
+                    <el-button type="primary" @click="submit(ruleFormRef)">
                         Confirm
                     </el-button>
                 </span>
@@ -70,11 +70,16 @@
 </template>
 
 <script setup>
-import {reactive } from 'vue';
+import {reactive, ref, onMounted } from 'vue';
+import { ElMessage } from 'element-plus'
+import { getInfo, addInfo, updateInfo } from '@/request/api'
 const formLabelWidth = '140px'
+const ruleFormRef = ref()
 
 const data = reactive({
+    'isAdd': true,
     'tableData':[],
+    'total': 0,
     'dialogFormVisible': false,
     'form': {
         name: "",
@@ -88,21 +93,94 @@ const data = reactive({
     }
 })
 
-const rules = {}
+const rules = {
+    name: [{required: true, message: 'Please enter name'}],
+    sex: [{required: true, message: 'Please enter sex'}],
+    age: [{required: true, message: 'Please enter age'}],
+    address: [{required: true, message: 'Please enter address'}],
+    time: [{required: true, message: 'Please enter time'}],
+    phone: [{required: true, message: 'Please enter phone'}],
+}
+
+onMounted(()=>{
+    getData()
+})
+
+
+function getData() {
+    getInfo().then( res => {
+        if(res.data.status === 200) {
+            data.tableData = res.data.data
+            data.total = res.data.total
+        }
+    })
+}
 
 function addStudent() {
+    data.isAdd = true
+    data.dialogFormVisible = true
+    data.form = {
+        name: "",
+        gender: "1",
+        age: "",
+        father: "",
+        mather: "",
+        address: "",
+        time: "",
+        phone: "",
+    }
+
+    //remove form validation.
+    ruleFormRef.value.resetFields()
+}
+
+function edit(row) {
+    //注意不要直接把值赋给Form， 不然修改表示， 后面显示的表会跟着变动
+    data.form = {...row}
+    data.isAdd = false
     data.dialogFormVisible = true
 }
 
-function edit() {
-
+function closeInfo() {
+    data.dialogFormVisible = false
 }
 
 function del() {
 
 }
 
-function submit(form) {
-    console.log(form)
+function submit(formEl) {
+    if (!formEl) return
+    formEl.validate((valid, fields) => {
+    if (valid) {
+        console.log('submit!')
+        //Check if add or update
+        if(data.isAdd) {
+            addInfo(data.form).then( res => {
+                if(res.data.status === 200) {
+                    getData()
+                    data.dialogFormVisible = false
+                    ElMessage({
+                        message: res.data.message,
+                        type: 'success',
+                    })
+                }
+            })
+        } else {
+            updateInfo(data.form).then( res => {
+                if(res.data.status === 200) {
+                    getData()
+                    data.dialogFormVisible = false
+                    ElMessage({
+                        message: res.data.message,
+                        type: 'success',
+                    })
+                }
+            })
+        }
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
 }
 </script>
