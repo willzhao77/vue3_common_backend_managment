@@ -48,7 +48,7 @@ const router = createRouter({
             component: () => import('@/views/students/WorkList.vue')
           },
           {
-            path: '/home/student',
+            path: '/home/workmnt',
             name: 'workMnt',
             iconClass: 'fa fa-list-alt',
             component: () => import('@/views/students/WorkMnt.vue')
@@ -80,8 +80,8 @@ const router = createRouter({
             component: () => import('@/views/dataAnalysis/TravelMap.vue')
           },
           {
-            path: '/home/work',
-            name: 'workList',
+            path: '/home/scoremap',
+            name: 'Score Map',
             iconClass: 'fa fa-list-alt',
             component: () => import('@/views/dataAnalysis/ScoreMap.vue')
           },

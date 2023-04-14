@@ -73,3 +73,12 @@ export function infoDel(id) {
         url: `/info/${id}`,
     })
 }
+
+//学生列表查询接口
+export function works(params) {
+    return http({
+        method: 'get',
+        url: '/works',
+        params
+    })
+}
