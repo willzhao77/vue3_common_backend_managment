@@ -82,3 +82,12 @@ export function works(params) {
         params
     })
 }
+
+// 数据概览接口
+export function dataview(params) {
+    return http({
+        method: 'get',
+        url: '/dataview',
+        params
+    })
+}
