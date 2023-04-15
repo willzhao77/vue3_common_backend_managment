@@ -12,7 +12,7 @@ const router = createRouter({
     },
     {
       path: '/login',
-      name: 'login',
+      name: 'Login',
       hidden: true,
       component: () => import('../views/Login.vue')
     },
@@ -95,6 +95,16 @@ const router = createRouter({
       hidden: true,
     },
   ]
+})
+
+//Add Navigation Guard
+router.beforeResolve((to, from, next) => {
+  // console.log('User Authenticated')
+  // console.log('Coming from:', from.path)
+  // console.log('Going to:', to.path)
+  // console.log('Next:', next)
+  if (to.name !== 'Login' && !localStorage.getItem('username')) next({ name: 'Login' })
+  else next()
 })
 
 export default router

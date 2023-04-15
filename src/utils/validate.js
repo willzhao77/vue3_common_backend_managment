@@ -1,7 +1,7 @@
 export function nameRule(rule, value, callback) {
     const reg = /(^[a-zA-Z0-9]{4,10}$)/
     if (!value) {
-        return callback(new Error('Please input the age'))
+        return callback(new Error('Please input name.'))
     } else if (!reg.test(value)) {
         callback(new Error('please enter name between 4-10 charators.'))
     } else {
