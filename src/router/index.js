@@ -74,8 +74,8 @@ const router = createRouter({
             component: () => import('@/views/dataAnalysis/MapView.vue')
           },
           {
-            path: '/home/score',
-            name: 'scoreMap',
+            path: '/home/travelmap',
+            name: 'Travel Map',
             iconClass: 'fa fa-list-alt',
             component: () => import('@/views/dataAnalysis/TravelMap.vue')
           },

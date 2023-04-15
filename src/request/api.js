@@ -91,3 +91,11 @@ export function dataview(params) {
         params
     })
 }
+
+// 旅游地图接口
+export function travel() {
+    return http({
+        method: 'get',
+        url: '/travel',
+    })
+}
