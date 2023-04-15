@@ -1,4 +1,16 @@
+# Vue3 Common Backend Management.
 # continue from vue3_basic_login_v1 
+
+1. Head Main footer components.
+2. Menu
+3. Axios API encapsulation.
+4. Breadcrumb
+5. Data transfer to _text
+6. Frontend pagination - student list page
+7. Backend pagination - work list page
+8. Search  - student list page
+9. CURD - Info List page.
+10. Echarts (Bar, Line, Map)
 
 This template should help get you started developing with Vue 3 in Vite.
 
