@@ -97,7 +97,7 @@ const router = createRouter({
           path: '/users/user',
           name: 'userRight',
           iconClass: 'fa fa-user',
-          component: () => import('@/views/users/user.vue')
+          component: () => import('@/views/users/User.vue')
         },
       ]
     },
