@@ -29,7 +29,6 @@ const app = createApp(App)
 
 // app.config.globalProperties.$http = Axios
 app.config.globalProperties.$http = http
-
 app.use(router)
 app.use(ElementPlus)
 

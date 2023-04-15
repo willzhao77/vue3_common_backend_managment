@@ -18,40 +18,28 @@ const router = createRouter({
     },
     {
       path: '/home',
-      name: 'studentMnt',
+      name: 'Student Management',
       iconClass: 'fa fa-users',
       redirect: '/home/student',
       component: () => import('../views/HomeView.vue'),
       children: [
           {
             path: '/home/student',
-            name: 'studentList',
+            name: 'Student List',
             iconClass: 'fa fa-list',
             component: () => import('@/views/students/StudentList.vue')
           },
           {
             path: '/home/info',
-            name: 'infoList',
+            name: 'info List',
             iconClass: 'fa fa-list-alt',
             component: () => import('@/views/students/InfoList.vue')
-          },
-          {
-            path: '/home/infos',
-            name: 'infoLists',
-            iconClass: 'fa fa-list-alt',
-            component: () => import('@/views/students/InfoLists.vue')
           },
           {
             path: '/home/work',
             name: 'workList',
             iconClass: 'fa fa-list-alt',
             component: () => import('@/views/students/WorkList.vue')
-          },
-          {
-            path: '/home/workmnt',
-            name: 'workMnt',
-            iconClass: 'fa fa-list-alt',
-            component: () => import('@/views/students/WorkMnt.vue')
           },
       ]
     },
@@ -78,12 +66,6 @@ const router = createRouter({
             name: 'Travel Map',
             iconClass: 'fa fa-list-alt',
             component: () => import('@/views/dataAnalysis/TravelMap.vue')
-          },
-          {
-            path: '/home/scoremap',
-            name: 'Score Map',
-            iconClass: 'fa fa-list-alt',
-            component: () => import('@/views/dataAnalysis/ScoreMap.vue')
           },
       ]
     },
